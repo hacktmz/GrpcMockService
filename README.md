@@ -7,7 +7,7 @@
 - protobuf-jsonschema 
 - react-jsonschema-form
 
-## make
+## build
 - make
 
 ## useage
