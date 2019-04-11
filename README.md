@@ -1,10 +1,10 @@
-### make
+## make
 - make
 
 ## useage
 ./GrpcMockService 
 
-## test 
+## test and example
 - 1  ./parser_client.go
 - 2  ./hello_client.go
 
