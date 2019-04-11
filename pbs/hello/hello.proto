@@ -1,0 +1,32 @@
+syntax = "proto3"; // 指定proto版本
+package rokid.inner;     // 指定包名
+
+option go_package = "hello";
+
+// 定义Hello服务
+service Hello {
+	// 定义SayHello方法
+	rpc SayHello(HelloRequest) returns (HelloResponse) {}
+}
+service Hello2 {
+	// 定义SayHello方法
+	rpc SayHello2(HelloRequest) returns (HelloResponse) {}
+}
+
+// HelloRequest 请求结构
+message HelloRequest {
+    int32 id = 1;
+    string name = 2;
+    
+}
+
+// HelloResponse 响应结构
+message HelloResponse {
+    //bytes voice    = 1;
+    string message = 1;
+    map<string, string> options = 2;
+}
+
+message EmptyMsg {
+
+}

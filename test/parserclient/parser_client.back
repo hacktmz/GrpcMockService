@@ -1,0 +1,70 @@
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+
+	pb "gitlab.rokid-inc.com/open-platform/mockservice/pbs"
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/grpclog"
+)
+
+const (
+	// Address gRPC服务地址
+	Address = "127.0.0.1:30002"
+	file    = "./test/vpr.proto"
+)
+
+func main() {
+	// 连接
+	conn, err := grpc.Dial(Address, grpc.WithInsecure())
+	if err != nil {
+		grpclog.Fatalln(err)
+	}
+	defer conn.Close()
+
+	// 初始化客户端
+	c := pb.NewMockParserClient(conn)
+
+	protoFileBytes, e := ioutil.ReadFile(file)
+	if e != nil {
+		fmt.Printf("ReadFile(%s): %s", file, e)
+		return
+	}
+	// 调用方法
+	req := &pb.ParserRequest{Protofile: protoFileBytes}
+	res, err := c.Startparser(context.Background(), req)
+
+	if err != nil {
+		grpclog.Fatalln(err)
+	}
+
+	fmt.Println(res)
+	json, e := ioutil.ReadFile("./test/vprres.json")
+	if e != nil {
+		fmt.Printf("ReadFile(%s): %s", json, e)
+		return
+	}
+	fmt.Println(json)
+	///////////////////////////////////////////////////////
+	reqstart := &pb.MockStartRequest{
+		Ip:        "0.0.0.0",
+		Protofile: protoFileBytes,
+		Port:      30000,
+		Protojson: string(json),
+		IsRandom:  0,
+		Service:   "rokid.inner.v2.vpr.VprService",
+	}
+	res2, err := c.Start(context.Background(), reqstart)
+	fmt.Println(res2)
+	///////////////////////////////////////////////////////
+	/*
+		reqstop := &pb.MockStopRequest{
+			Ip: "127.0.0.1",
+		}
+
+		res3, err := c.Stop(context.Background(), reqstop)
+		fmt.Println(res3)
+	*/
+}

@@ -1,0 +1,9 @@
+{
+    "SayHello": {
+        "message": "this is a HelloResponse",
+        "options": {
+            "aaa": "aax",
+            "baaa": "bbx"
+        }
+    }
+}

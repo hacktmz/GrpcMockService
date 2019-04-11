@@ -1,0 +1,47 @@
+syntax = "proto3"; // 指定proto版本
+package test;     // 指定包名
+
+option go_package = "mock";
+
+// 定义Hello服务
+service MockService {
+    // 定义SayHello方法
+    rpc startparser(ParserRequest) returns (ParserResponse) {}
+    rpc startmock(MockRequest) returns (MockResponse) {}
+    rpc stopmock(StopRequest) returns (MockResponse) {}
+}
+
+message ParserRequest {
+    string   protofile                  = 1;
+}
+
+message ParserResponse {
+    string protoformart    = 1;
+    string error          = 2;
+}
+
+
+message StopRequest {
+    string  ip                         = 1;
+}
+
+// HelloRequest 请求结构
+message MockRequest {
+    int32   port                       = 1;
+    repeated ProtoHeader headers       = 2;
+
+}
+
+message ProtoHeader {
+    string  filename                   = 1;
+    string  protofile                  = 2;
+    string  protojson                  = 3;
+}
+
+// HelloResponse 响应结构   
+message MockResponse {
+    //bytes voice    = 1;
+    string message   = 1;
+
+    //map<string, string> options = 2;
+}
